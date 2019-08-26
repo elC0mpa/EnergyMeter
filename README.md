@@ -98,9 +98,9 @@ If there is no longer need to use external interrupts, `disableInterrupt` functi
 
   ## Examples
 
-  [ConsumedEnergy](https://github.com/evert-arias/EasyButton/blob/master/examples/Pressed/Pressed.ino)
+  [ConsumedEnergy](https://github.com/elC0mpa/EnergyMeter/blob/master/examples/ConsumedEnergy/ConsumedEnergy.ino)
 
-  [Interrupt_ConsumedEnergy](https://github.com/evert-arias/EasyButton/blob/master/examples/PressedForDuration/PressedForDuration.ino)
+  [Interrupt_ConsumedEnergy](https://github.com/elC0mpa/EnergyMeter/blob/master/examples/Interrupt_ConsumedEnergy/Interrupt_ConsumedEnergy.ino)
 
 ## Copyright
 
