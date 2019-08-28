@@ -6,7 +6,7 @@ Arduino library to get data from energy meters in order to monitor them.
 
 ## What it is for
 
-This library is used to monitor energy meters. It uses **callbacks** to trigger actions each time the meter measures a certain kind of kilowatts-hour. By using this library, energy meters can be **polled** *(less efficient approach)* or can be interfaced through **external interrupts** *(most efficient approach)*.
+This library is used to monitor energy meters. It uses **callbacks** to trigger actions each time the meter measures a certain amount of kilowatts-hour. By using this library, energy meters can be **polled** *(less efficient approach)* or can be interfaced through **external interrupts** *(most efficient approach)*.
 
 ## How to install
 
@@ -17,7 +17,7 @@ Install the library using one of the following options
 - [Use it locally cloning this repository into your project's directory](https://help.github.com/articles/cloning-a-repository/)
 
 ## Compatibility
-This library is compatible with any energy meter wich is based on ADE7755 (or similar) integrated circuit. This integrated circuit has a high frequency output (CF) wich is the easiest way to interface the energy meter to a microcontroller. The most important specification of energy meters in order to monitor them with this library is **impulses per kilowatt-hour**. 
+This library is compatible with any energy meter which is based on ADE7755 (or similar) integrated circuit. This integrated circuit has a high frequency output (CF) wich is the easiest way to interface the energy meter to a microcontroller. The most important specification of energy meters in order to monitor them with this library is **impulses per kilowatt-hour**. 
 
 ## How to use
 
@@ -53,7 +53,7 @@ The library provides callbacks to trigger actions each time the meter measures a
 // Energy measured 
 meter.onConsumedEnergy(1, energyConsumed);
 ```
-The callback function `energyConsumed` must receive a float parameter which represents the **energy measured by the meter** until the callback is called.
+The callback function `energyConsumed` **must receive a float parameter** which represents the **energy measured by the meter** until the callback is called.
 ```c++
 void energyConsumed(float energy)
 {
@@ -62,7 +62,7 @@ void energyConsumed(float energy)
 ```
 
 ### **Polling meter**
-In order to continuously read the status of the meter (less efficient approach), `read` function must be called inside loop.
+In order to continuously read the status of the meter (less efficient approach), `read` function must be called inside `loop`.
 ```c++
 void loop() {
     meter.read();
