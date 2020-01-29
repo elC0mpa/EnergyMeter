@@ -19,7 +19,7 @@ public:
 	//ctors
 
 	EnergyMeter(){}
-	EnergyMeter(uint8_t pulsesPin, unsigned int pulsesPerKilowattHour, float energy = 0);
+	EnergyMeter(uint8_t pulsesPin, unsigned int pulsesPerKilowattHour, float energy = 0, float voltage = 230);
 
     //events
 
@@ -57,10 +57,11 @@ private:
 	float _energy_increment_per_pulse;								//Consumed energy when a new pulse arrives.
     float _last_energy;												//Last energy value when _consumed_energy_callback was called.
     float _energy_interval;											//Energy interval to call _consumed_energy_callback.
+	float _voltage;													//Ideal voltage
 
 	//Actual Serie fields
-	unsigned long prevMillisValue;
-	unsigned long actualMillisValue;
+	unsigned long _prev_millis_value;
+	unsigned long _actual_millis_value;
 
     //pin states
     bool _last_state;												//Last state of signal incoming from energy meter.

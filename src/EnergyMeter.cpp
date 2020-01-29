@@ -9,7 +9,7 @@
 #include "EnergyMeter.h"
 
 
-EnergyMeter::EnergyMeter(uint8_t pulsesPin, unsigned int pulsesPerKilowattHour, float energy)
+EnergyMeter::EnergyMeter(uint8_t pulsesPin, unsigned int pulsesPerKilowattHour, float energy, float voltage)
 {
     _pulses_pin = pulsesPin;
     _pulses_per_kilowatt_hour = pulsesPerKilowattHour;
@@ -18,6 +18,7 @@ EnergyMeter::EnergyMeter(uint8_t pulsesPin, unsigned int pulsesPerKilowattHour, 
     _poll_read = true;
     _consumed_energy_callback_should_be_called = false; 
     _energy_increment_per_pulse = (float)1/_pulses_per_kilowatt_hour;
+    _voltage = voltage;
     pinMode(_pulses_pin, INPUT_PULLUP);
 	_current_state = digitalRead(_pulses_pin);
 }
@@ -80,6 +81,7 @@ EnergyMeter EnergyMeter::operator=(const EnergyMeter& meter)
     _last_state = meter._last_state;
     _current_state = meter._current_state;
     _poll_read = meter._poll_read;
+    _voltage = meter._voltage;
 	return *this;
 }
 
