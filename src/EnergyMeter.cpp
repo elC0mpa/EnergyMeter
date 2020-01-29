@@ -102,3 +102,8 @@ void EnergyMeter::disableInterrupt()
     detachInterrupt(digitalPinToInterrupt(_pulses_pin));
     _poll_read = true;
 }
+
+float EnergyMeter::getEnergy()
+{
+    return _energy;
+}

@@ -41,8 +41,11 @@ public:
 	void disableInterrupt();
 
 	//operators override
-	EnergyMeter operator=(const EnergyMeter&);						
+	EnergyMeter operator=(const EnergyMeter&);
 
+	//getters						
+
+	float getEnergy();
 
 private:
 	//pins
