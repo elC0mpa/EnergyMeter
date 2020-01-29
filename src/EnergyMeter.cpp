@@ -79,6 +79,7 @@ EnergyMeter EnergyMeter::operator=(const EnergyMeter& meter)
     _energy_interval = meter._energy_interval;
     _last_state = meter._last_state;
     _current_state = meter._current_state;
+    _poll_read = meter._poll_read;
 	return *this;
 }
 
