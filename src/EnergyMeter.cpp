@@ -21,12 +21,21 @@ EnergyMeter::EnergyMeter(uint8_t pulsesPin, unsigned int pulsesPerKilowattHour, 
     _voltage = voltage;
     pinMode(_pulses_pin, INPUT_PULLUP);
 	_current_state = digitalRead(_pulses_pin);
+    _actual_millis_value = millis();
 }
 
 void EnergyMeter::onConsumedEnergy(float energy, EnergyMeter::callback_consumed_energy_t callback)
 {
     _energy_interval = energy;
     _consumed_energy_callback = callback;
+    _consumed_energy_current_callback = NULL;
+}
+
+void EnergyMeter::onConsumedEnergyAndCurrent(float energy, EnergyMeter::callback_consumed_energy_current_t callback)
+{
+    _energy_interval = energy;
+    _consumed_energy_current_callback = callback;
+    _consumed_energy_callback = NULL;
 }
 
 bool EnergyMeter::read()
@@ -47,14 +56,23 @@ bool EnergyMeter::read()
 
 void EnergyMeter::_analizePulse()
 {
+    _prev_millis_value = _actual_millis_value;
+    _actual_millis_value = millis();
     _energy += _energy_increment_per_pulse;
     if (_last_energy + _energy_interval <= _energy)
     {
         _last_energy = _energy;
-        if (_consumed_energy_callback)
+        if (_consumed_energy_callback != NULL || _consumed_energy_current_callback != NULL)
         {
+            _current_consumption = 3600000 / _pulses_per_kilowatt_hour;
+            _current_consumption = _current_consumption * 1000/ ((_actual_millis_value - _prev_millis_value) * _voltage);
             if (_poll_read)
-                _consumed_energy_callback(_energy);
+            {
+                if(_consumed_energy_callback != NULL)
+                    _consumed_energy_callback(_energy);
+                else if(_consumed_energy_current_callback != NULL)
+                    _consumed_energy_current_callback(_energy, _current_consumption);
+            }
             else if (!_poll_read)
                 _consumed_energy_callback_should_be_called = true;
         }
@@ -63,11 +81,11 @@ void EnergyMeter::_analizePulse()
 
 void EnergyMeter::update()
 {
-    if (_consumed_energy_callback_should_be_called)
-    {
+    if (_consumed_energy_callback_should_be_called && _consumed_energy_callback != NULL)
         _consumed_energy_callback(_energy);
-        _consumed_energy_callback_should_be_called = false;
-    }
+    else if (_consumed_energy_callback_should_be_called && _consumed_energy_current_callback != NULL)
+        _consumed_energy_current_callback(_energy, _current_consumption);    
+    _consumed_energy_callback_should_be_called = false;
 }
 
 EnergyMeter EnergyMeter::operator=(const EnergyMeter& meter)

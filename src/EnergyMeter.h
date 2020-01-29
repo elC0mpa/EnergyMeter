@@ -15,6 +15,7 @@ public:
 
     typedef void(*callback_t)();
 	typedef void(*callback_consumed_energy_t)(float energy);
+	typedef void(*callback_consumed_energy_current_t)(float energy, float current);
 
 	//ctors
 
@@ -25,6 +26,7 @@ public:
 
 	//Calls a callback function each time energy increment by the given value.
     void onConsumedEnergy(float energy, callback_consumed_energy_t callback);		
+	void onConsumedEnergyAndCurrent(float energy, callback_consumed_energy_current_t callback);
 
 	//user functions
 
@@ -57,7 +59,8 @@ private:
 	float _energy_increment_per_pulse;								//Consumed energy when a new pulse arrives.
     float _last_energy;												//Last energy value when _consumed_energy_callback was called.
     float _energy_interval;											//Energy interval to call _consumed_energy_callback.
-	float _voltage;													//Ideal voltage
+	float _voltage;													//Ideal voltage.
+	float _current_consumption;										//Current consumption.
 
 	//Actual Serie fields
 	unsigned long _prev_millis_value;
@@ -76,5 +79,6 @@ private:
 	bool _supportsInterrupt();
     //callbacks
     callback_consumed_energy_t _consumed_energy_callback;
+	callback_consumed_energy_current_t _consumed_energy_current_callback;
 };
 
