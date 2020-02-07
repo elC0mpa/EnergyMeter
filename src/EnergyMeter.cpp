@@ -17,6 +17,7 @@ EnergyMeter::EnergyMeter(uint8_t pulsesPin, unsigned int pulsesPerKilowattHour, 
     _last_energy = _energy;
     _poll_read = true;
     _consumed_energy_callback_should_be_called = false; 
+    _consumed_current_callback_should_be_called = false;
     _energy_increment_per_pulse = (float)1/_pulses_per_kilowatt_hour;
     _voltage = voltage;
     pinMode(_pulses_pin, INPUT_PULLUP);
@@ -30,6 +31,10 @@ void EnergyMeter::onConsumedEnergy(float energy, EnergyMeter::callback_consumed_
     _consumed_energy_callback = callback;
 }
 
+void EnergyMeter::onCurrentChanged(callback_consumed_energy_t callback)
+{
+    _consumed_current_callback = callback;
+}
 
 bool EnergyMeter::read()
 {
@@ -37,7 +42,7 @@ bool EnergyMeter::read()
     {
         _last_state = _current_state;
         _current_state = digitalRead(_pulses_pin);
-        if (_current_state == HIGH && _last_state == LOW)
+        if (_current_state == LOW && _last_state == HIGH)
             _analizePulse();
         return _current_state;
     }
@@ -52,17 +57,22 @@ void EnergyMeter::_analizePulse()
     _prev_millis_value = _actual_millis_value;
     _actual_millis_value = millis();
     _energy += _energy_increment_per_pulse;
+    if (_consumed_current_callback != NULL)
+    {
+        _current_consumption = 3600000 / _pulses_per_kilowatt_hour;
+        _current_consumption = _current_consumption * 1000/ ((_actual_millis_value - _prev_millis_value) * _voltage);
+        if (_poll_read)
+            _consumed_current_callback(_current_consumption);
+        else if (!_poll_read)
+            _consumed_current_callback_should_be_called = true;
+    }
     if (_last_energy + _energy_interval <= _energy)
     {
         _last_energy = _energy;
-        _current_consumption = 3600000 / _pulses_per_kilowatt_hour;
-        _current_consumption = _current_consumption * 1000/ ((_actual_millis_value - _prev_millis_value) * _voltage);
         if (_consumed_energy_callback != NULL)
         {
             if (_poll_read)
-            {
                 _consumed_energy_callback(_energy);
-            }
             else if (!_poll_read)
                 _consumed_energy_callback_should_be_called = true;
         }
@@ -73,7 +83,10 @@ void EnergyMeter::update()
 {
     if (_consumed_energy_callback_should_be_called)
         _consumed_energy_callback(_energy);
+    if (_consumed_current_callback_should_be_called)
+        _consumed_current_callback(_current_consumption);
     _consumed_energy_callback_should_be_called = false;
+    _consumed_current_callback_should_be_called = false;
 }
 
 EnergyMeter EnergyMeter::operator=(const EnergyMeter& meter)

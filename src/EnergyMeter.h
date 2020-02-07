@@ -26,8 +26,8 @@ public:
 	//Calls a callback function each time energy increment by the given value.
     void onConsumedEnergy(float energy, callback_consumed_energy_t callback);	
 
-	//Calls a callback function each time energy increment by the given value and give access to energy and current
-	
+	//Calls a callback function each time current consumption change
+	void onCurrentChanged(callback_consumed_energy_t callback);
 
 	//user functions
 
@@ -73,8 +73,9 @@ private:
 
     bool _poll_read;												//True if energy meter is being polled, False if is being used through external interrupts.
 
-	bool _consumed_energy_callback_should_be_called;				//Only needed when using interrupts.
-    
+	bool _consumed_energy_callback_should_be_called;				//Used to call the callback when using interrupts
+    bool _consumed_current_callback_should_be_called;				//Used to call the callback when using interrupts
+
 	//functions
     void _analizePulse();											//Update private fields and check if _consumed_energy_callback should be called
 	bool _supportsInterrupt();
