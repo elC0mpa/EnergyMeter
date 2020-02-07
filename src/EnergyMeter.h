@@ -14,8 +14,7 @@ class EnergyMeter
 public:
 
     typedef void(*callback_t)();
-	typedef void(*callback_consumed_energy_t)(float energy);
-	typedef void(*callback_consumed_energy_current_t)(float energy, float current);
+	typedef void(*callback_consumed_energy_t)(float);
 
 	//ctors
 
@@ -25,8 +24,10 @@ public:
     //events
 
 	//Calls a callback function each time energy increment by the given value.
-    void onConsumedEnergy(float energy, callback_consumed_energy_t callback);		
-	void onConsumedEnergyAndCurrent(float energy, callback_consumed_energy_current_t callback);
+    void onConsumedEnergy(float energy, callback_consumed_energy_t callback);	
+
+	//Calls a callback function each time energy increment by the given value and give access to energy and current
+	
 
 	//user functions
 
@@ -79,5 +80,5 @@ private:
 	bool _supportsInterrupt();
     //callbacks
     callback_consumed_energy_t _consumed_energy_callback;
-	callback_consumed_energy_current_t _consumed_energy_current_callback;
+	callback_consumed_energy_t _consumed_current_callback;
 };
