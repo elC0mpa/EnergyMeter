@@ -100,6 +100,7 @@ EnergyMeter EnergyMeter::operator=(const EnergyMeter& meter)
     _current_state = meter._current_state;
     _poll_read = meter._poll_read;
     _voltage = meter._voltage;
+    _current_consumption = meter._current_consumption;
 	return *this;
 }
 

@@ -81,4 +81,3 @@ private:
     callback_consumed_energy_t _consumed_energy_callback;
 	callback_consumed_energy_current_t _consumed_energy_current_callback;
 };
-
