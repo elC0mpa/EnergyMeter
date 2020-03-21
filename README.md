@@ -55,10 +55,24 @@ The library provides callbacks to trigger actions each time the meter measures a
 meter.onConsumedEnergy(1, energyConsumed);
 ```
 The callback function `energyConsumed` **must receive a float parameter** which represents the **energy in kWH measured by the meter** until the callback is called.
+
 ```c++
 void energyConsumed(float energy)
 {
   Serial.println(String(energy) + " kilowatts-hour consumed");
+}
+```
+
+```c++
+// Current consumption
+meter.onCurrentChanged(currentChanged);
+```
+The callback function `currentChanged` **will be called each time a new pulse is detected**. Each time this happens, the library will calculate the current consumption  
+
+```c++
+void currentChanged(float current)
+{
+  Serial.println(String(current) + " A consumed");
 }
 ```
 
