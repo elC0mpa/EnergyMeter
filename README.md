@@ -40,10 +40,11 @@ The class constructor takes the following additional arguments:
 
 **energy** : Energy measured by the meter at the moment that the instance is created. By default, zero.
 
+**voltage** : Line voltage of the circuit which is power is being measured by the energy meter. You should consider that this value might change.
 
 ```c++
 // EnergyMeter class's constructor signature
-EnergyMeter(uint8_t pulsesPin, unsigned int pulsesPerKilowattHour, float energy = 0);
+EnergyMeter(uint8_t pulsesPin, unsigned int pulsesPerKilowattHour, float energy = 0, float voltage = 230);
 ```
 
 ### **Callbacks**
