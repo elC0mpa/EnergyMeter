@@ -110,6 +110,8 @@ If there is no longer need to use external interrupts, `disableInterrupt` functi
 ```c++
   meter.disableInterrupt();
 ```
+  ## Changelog  
+  - **v1.0.0 (2019/08/27)** - library initial release
 
   ## Examples
 
