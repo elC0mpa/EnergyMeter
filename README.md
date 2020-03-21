@@ -54,7 +54,7 @@ The library provides callbacks to trigger actions each time the meter measures a
 // Energy measured 
 meter.onConsumedEnergy(1, energyConsumed);
 ```
-The callback function `energyConsumed` **must receive a float parameter** which represents the **energy measured by the meter** until the callback is called.
+The callback function `energyConsumed` **must receive a float parameter** which represents the **energy in kWH measured by the meter** until the callback is called.
 ```c++
 void energyConsumed(float energy)
 {
