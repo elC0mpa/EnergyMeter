@@ -129,3 +129,11 @@ float EnergyMeter::getEnergy()
 {
     return _energy;
 }
+
+void EnergyMeter::setEnergy(float energy)
+{
+    _energy = energy;
+    _last_energy = energy;
+    if (!_poll_read)
+       _consumed_energy_callback_should_be_called = true;
+}
