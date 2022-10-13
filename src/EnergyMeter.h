@@ -49,6 +49,7 @@ public:
 	//getters						
 
 	float getEnergy();
+	void setEnergy(float energy = 0);
 
 private:
 	//pins
